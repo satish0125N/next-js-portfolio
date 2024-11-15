@@ -2,20 +2,153 @@
 @tailwind components;
 @tailwind utilities;
 
+/* html {
+	font-size: 62.5%;
+} */
+
+@layer base {
+	@font-face {
+		font-family: 'Toe the Lineless';
+		src:
+			local('Toe the Lineless Regular'),
+			local('Toe-the-Lineless'),
+			url(fonts/Toe-the-Lineless.woff2) format('woff2'),
+			url(fonts/Toe-the-Lineless.woff) format('woff');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+	@font-face {
+		font-family: 'Colus';
+		src:
+			local('Colus Regular'),
+			local('Colus-Regular'),
+			url(fonts/Colus-Regular.woff) format('woff2'),
+			url(fonts/Colus-Regular.woff) format('woff');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	@font-face {
+		font-family: 'Colus';
+		src:
+			local('Colus Regular'),
+			local('Colus-Regular'),
+			url(fonts/Colus-Regular.woff) format('woff2'),
+			url(fonts/Colus-Regular.woff) format('woff');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #f7f7f7;
+	--foreground: #171717;
+	--primary: #bf5dd7;
+	--gold: #ffd700;
+	--rotateX-100: transform: 'rotateX(45deg)';
+	--rotateX--100: transform: 'rotateX(-45deg)';
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+	color: var(--foreground);
+	background: var(--background);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.border-gradient {
+	width: 100%;
+	height: 1px;
+	background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+	background-size: 200% 100%;
+	animation: moveGradient 3s linear infinite;
+	transition: all 0.5s;
+}
+.custom-stroke-bg {
+	background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+	background-size: 200% 100%;
+	animation: moveGradient 3s linear infinite;
+	transition: all 0.5s;
+}
+
+@keyframes moveGradient {
+	0% {
+		background-position: -100% -100%;
+	}
+	100% {
+		background-position: 100% 200%;
+	}
+}
+nav.sticky {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+}
+
+.custom-stroke {
+	-webkit-text-stroke: 1px var(--purple); /* Add text stroke */
+}
+.custom-stroke-gold {
+	-webkit-text-stroke: 1px var(--gold); /* Add text stroke */
+}
+
+.neo-shadow {
+	text-shadow:
+		0 0 5px rgba(255, 215, 0, 0.8),
+		/* Inner glow */ 0 0 10px rgba(255, 215, 0, 0.8),
+		/* Outer glow */ 0 0 15px rgba(255, 215, 0, 0.8),
+		/* More intensity */ 0 0 20px rgba(255, 215, 0, 0.8); /* Stronger outer glow */
+	animation: neon-glow 2s ease-in-out infinite;
+}
+
+@keyframes neon-glow {
+	0% {
+		text-shadow:
+			0 0 5px rgba(255, 215, 0, 0.8),
+			0 0 10px rgba(255, 215, 0, 0.8),
+			0 0 15px rgba(255, 215, 0, 0.8),
+			0 0 20px rgba(255, 215, 0, 0.8);
+	}
+	50% {
+		text-shadow:
+			0 0 20px rgba(255, 255, 255, 0.5),
+			0 0 15px rgba(255, 255, 255, 0.5),
+			0 0 10px rgba(255, 255, 255, 0.5),
+			0 0 5px rgba(255, 255, 255, 0.5);
+	}
+	100% {
+		text-shadow:
+			0 0 5px rgba(255, 215, 0, 0.8),
+			0 0 10px rgba(255, 215, 0, 0.8),
+			0 0 15px rgba(255, 215, 0, 0.8),
+			0 0 20px rgba(255, 215, 0, 0.8);
+	}
+}
+
+.draw-line line {
+	stroke: #ffd700;
+	stroke-width: 1;
+}
+.container {
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
+.rotateX-100 {
+	transform: rotateX(45deg);
+}
+
+.rotateX--100 {
+	transform: rotateX(-45deg);
 }
