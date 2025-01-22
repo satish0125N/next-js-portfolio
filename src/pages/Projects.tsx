@@ -15,7 +15,7 @@ const Projects = () => {
         
         const apiUrl = window.location.hostname === 'localhost'
             ? 'http://localhost/react-with-tappa/next-js-portfolio/backend/projects.php'
-            : 'https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php';
+            : 'https://next-js-portfolio-ebon-three.vercel.app/backend/projects.json';
 
           const response = await fetch(apiUrl, {
             method: 'GET',
