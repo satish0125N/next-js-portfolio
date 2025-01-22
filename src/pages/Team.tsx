@@ -21,14 +21,18 @@ const Team = () => {
         setIsLoading(true);
         setError(null);
         
-        const response = await fetch('http://localhost/react-with-tappa/next-js-portfolio/backend/team.php', {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer backend_static_token',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
+        const apiUrl = window.location.hostname === 'localhost'
+              ? 'http://localhost/react-with-tappa/next-js-portfolio/backend/team.php'
+              : 'https://next-js-portfolio-ebon-three.vercel.app/backend/team.php';
+
+            const response = await fetch(apiUrl, {
+              method: 'GET',
+              headers: {
+                'Authorization': 'Bearer backend_static_token',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              }
+            });
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => null);

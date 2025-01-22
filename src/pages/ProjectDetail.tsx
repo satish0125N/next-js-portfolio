@@ -15,14 +15,28 @@ const ProjectDetail = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(`https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php?id=${id}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer backend_static_token',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
+        const apiUrl = window.location.hostname === 'localhost'
+            ? `http://localhost/react-with-tappa/next-js-portfolio/backend/projects.php?id=${id}`
+            : `https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php?id=${id}`;
+
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer backend_static_token',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          });
+
+
+        // const response = await fetch(`https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php?id=${id}`, {
+        //   method: 'GET',
+        //   headers: {
+        //     'Authorization': 'Bearer backend_static_token',
+        //     'Content-Type': 'application/json',
+        //     'Accept': 'application/json'
+        //   }
+        // });
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => null);
