@@ -17,7 +17,7 @@ const Dashboard = () => {
         setError(null);
         
         
-        const response = await fetch('https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php', {
+        const response = await fetch('http://localhost/react-with-tappa/next-js-portfolio/backend/projects.php', {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer backend_static_token',
