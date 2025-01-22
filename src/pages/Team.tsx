@@ -23,7 +23,7 @@ const Team = () => {
         
         const apiUrl = window.location.hostname === 'localhost'
               ? 'http://localhost/react-with-tappa/next-js-portfolio/backend/team.php'
-              : 'https://next-js-portfolio-ebon-three.vercel.app/backend/team.json';
+              : 'https://next-js-portfolio-ebon-three.vercel.app/backend/team.php';
 
             const response = await fetch(apiUrl, {
               method: 'GET',
