@@ -1,72 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { PlusCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import ProjectCard from '../components/ProjectCard';
-import NewProjectModal from '../components/NewProjectModal';
-import EditProjectModal from '../components/EditProjectModal';
 import { Project } from '../types';
 
-const MOCK_PROJECTS: Project[] = [
-  {
-    id: '1',
-    title: 'E-commerce Platform Redesign',
-    description: 'Complete overhaul of the existing e-commerce platform with modern UI/UX',
-    summary: 'Modernizing the online shopping experience with a focus on mobile-first design and improved user engagement',
-    projectUrl: 'https://github.com/example/ecommerce',
-    technologies: ['React', 'Node.js', 'MongoDB'],
-    startDate: new Date('2024-03-01'),
-    endDate: new Date('2024-06-30'),
-    priority: 'High',
-    status: 'In Progress',
-    teamMembers: ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson']
-  },
-  {
-    id: '2',
-    title: 'Customer Support Dashboard',
-    description: 'Real-time dashboard for customer support metrics and ticket management',
-    summary: 'Building a comprehensive dashboard to monitor and manage customer support operations efficiently',
-    technologies: ['React', 'GraphQL', 'PostgreSQL'],
-    startDate: new Date('2024-02-15'),
-    priority: 'Medium',
-    status: 'Not Started',
-    teamMembers: ['Alex Brown', 'Emily Davis']
-  }
-];
-
 const Projects = () => {
-  const [projects, setProjects] = useState<Project[]>(() => {
-    const savedProjects = localStorage.getItem('projects');
-    return savedProjects ? JSON.parse(savedProjects) : MOCK_PROJECTS;
-  });
-  const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
-  const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem('projects', JSON.stringify(projects));
-  }, [projects]);
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        const response = await fetch('http://localhost/react-with-tappa/next-js-portfolio/backend/projects.php', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer backend_static_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
 
-  const handleCreateProject = (newProject: Omit<Project, 'id'>) => {
-    const projectWithId = {
-      ...newProject,
-      id: (projects.length + 1).toString()
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setProjects(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred while fetching projects');
+        console.error('Error fetching projects:', err);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    setProjects([...projects, projectWithId]);
-  };
 
-  const handleEditProject = (updatedProject: Project) => {
-    setProjects(projects.map(project => 
-      project.id === updatedProject.id ? updatedProject : project
-    ));
-  };
-
-  const handleDeleteProject = (projectId: string) => {
-    setProjects(projects.filter(project => project.id !== projectId));
-  };
-
-  const handleEditClick = (project: Project) => {
-    setSelectedProject(project);
-    setIsEditProjectModalOpen(true);
-  };
+    fetchProjects();
+  }, []);
 
   return (
     <>
@@ -76,44 +49,32 @@ const Projects = () => {
             <h1 className="text-2xl font-bold text-gray-900">Projects Overview</h1>
             <p className="text-gray-500">Track and manage your ongoing projects</p>
           </div>
-          <button
-            onClick={() => setIsNewProjectModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <PlusCircle className="w-5 h-5" />
-            New Project
-          </button>
+          
         </div>
         
+        {error && (
+          <div className="mb-6 p-4 text-red-700 bg-red-100 rounded-lg" role="alert">
+            {error}
+          </div>
+        )}
+        {isLoading ? (
+        <p>Loading...</p>
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <ProjectCard 
               key={project.id} 
               project={project} 
-              onEditClick={() => handleEditClick(project)}
-              onDeleteClick={() => handleDeleteProject(project.id)}
+             
             />
           ))}
         </div>
+      )}
       </main>
 
-      <NewProjectModal
-        isOpen={isNewProjectModalOpen}
-        onClose={() => setIsNewProjectModalOpen(false)}
-        onSubmit={handleCreateProject}
-      />
+     
 
-      {selectedProject && (
-        <EditProjectModal
-          isOpen={isEditProjectModalOpen}
-          onClose={() => {
-            setIsEditProjectModalOpen(false);
-            setSelectedProject(null);
-          }}
-          onSubmit={handleEditProject}
-          project={selectedProject}
-        />
-      )}
+      
     </>
   );
 };

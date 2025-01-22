@@ -1,14 +1,17 @@
 import React from 'react';
-import { Calendar, Users, ArrowRight, Link as LinkIcon, Edit, Trash2 } from 'lucide-react';
+import { Calendar, Users, ArrowRight, Link as LinkIcon, } from 'lucide-react';
 import { Project } from '../types';
+import { Link } from 'react-router-dom';
+import teamData from '../../backend/team.json';
 
 interface ProjectCardProps {
   project: Project;
-  onEditClick: () => void;
-  onDeleteClick: () => void;
+ 
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEditClick, onDeleteClick }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+
+  
   const getStatusColor = (status: string) => {
     const colors = {
       'Not Started': 'bg-gray-100 text-gray-800',
@@ -26,6 +29,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEditClick, onDelet
       'High': 'bg-red-100 text-red-800'
     };
     return colors[priority as keyof typeof colors] || colors['Low'];
+  };
+
+  const getTeamMemberName = (teamId: string) => {
+    const teamMember = teamData.find(member => member.id === teamId);
+    return teamMember ? teamMember.name : teamId;
   };
 
   return (
@@ -57,12 +65,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEditClick, onDelet
       
       <div className="flex items-center justify-between">
         <div className="flex -space-x-2">
-          {project.teamMembers.slice(0, 3).map((member, index) => (
+          {project.teamMembers.slice(0, 3).map((memberId, index) => (
             <div
               key={index}
               className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center"
+              title={getTeamMemberName(memberId)}
             >
-              <span className="text-xs font-medium">{member.charAt(0)}</span>
+              <span className="text-xs font-medium">{getTeamMemberName(memberId).charAt(0)}</span>
             </div>
           ))}
           {project.teamMembers.length > 3 && (
@@ -73,20 +82,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEditClick, onDelet
         </div>
         
         <div className="flex items-center gap-3">
-          <button
-            onClick={onEditClick}
-            className="text-gray-600 hover:text-gray-800 flex items-center gap-1 text-sm font-medium"
-          >
-            <Edit className="w-4 h-4" />
-            Edit
-          </button>
-          <button
-            onClick={onDeleteClick}
-            className="text-red-600 hover:text-red-700 flex items-center gap-1 text-sm font-medium"
-          >
-            <Trash2 className="w-4 h-4" />
-            Delete
-          </button>
+       
           {project.projectUrl && (
             <a
               href={project.projectUrl}
@@ -98,10 +94,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEditClick, onDelet
               Visit Project
             </a>
           )}
-          <button className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium">
-            View Details
-            <ArrowRight className="w-4 h-4" />
-          </button>
+         <Link 
+              to={`/projects/${project.id}`}
+              className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              View Details
+              <ArrowRight className="w-4 h-4" />
+            </Link>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -21,13 +21,13 @@ const Sidebar = () => {
     // { icon: Calendar, label: 'Calendar' },
     // { icon: Settings, label: 'Settings' }
   ];
-  console.log(menuItems);
+  
 
   return (
     <div className="w-64 bg-gray-900 min-h-screen p-4 text-white">
       <div className="flex items-center gap-2 mb-8 px-2">
         <FolderKanban className="w-8 h-8 text-blue-400" />
-        <h1 className="text-xl font-bold">ProjectHub</h1>
+        <h1 className="text-xl font-bold">ProjectHub By Zs</h1>
       </div>
       <nav>
       

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "title": "Glopbe",
+    "description": "GLOPBE PVT LTD",
+    "summary": "We make you stand out online and maximize your business with our customized brand solutions of web development, maintenance,design, and marketing. Build your digital presence with Glopbe.",
+    "projectUrl": "https://glopbe.com/",
+    "technologies": ["Wordpress", "HTML", "CSS", "MySQL"],
+    "startDate": "2024-03-01",
+    "endDate": "2024-06-30",
+    "priority": "High",
+    "status": "Done",
+    "teamMembers": ["team1", "team2"]
+  },
+  {
+    "id": "2",
+    "title": "The Finch",
+    "description": "Developed an animation-rich WordPress website for The Finch Design, a UI/UX design company based in Ahmedabad, following their detailed vision and design specifications to bring their creative animations to life.",
+    "summary": "Developed an animation-rich WordPress website for The Finch Design, a UI/UX design company based in Ahmedabad, following their detailed vision and design specifications to bring their creative animations to life.",
+    "projectUrl": "https://thefinch.design/",
+    "technologies": ["Wordpress", "HTML", "CSS", "MySQL"],
+    "startDate": "2024-02-15",
+    "priority": "High",
+    "status": "Done",
+    "teamMembers": ["team1", "team2"]
+  }
+]
