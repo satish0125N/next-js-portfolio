@@ -1,7 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const fs = require('fs').promises;
-const path = require('path');
+import express from 'express';
+import cors from 'cors';
+import { promises as fs } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -27,13 +31,11 @@ const authenticateToken = (req, res, next) => {
     next();
 };
 
-
-
 // POST request
 app.post('/api/projects', authenticateToken, async (req, res) => {
     try {
         // Read existing projects
-        const projectsData = await fs.readFile(path.join(__dirname, 'projects.json'), 'utf8');
+        const projectsData = await fs.readFile(join(__dirname, 'projects.json'), 'utf8');
         const projects = JSON.parse(projectsData);
 
         // If ID is provided in body, filter by ID
@@ -48,18 +50,19 @@ app.post('/api/projects', authenticateToken, async (req, res) => {
             res.json(projects);
         }
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-
 // Get team data
-app.get('/api/team',  async (req, res) => {
+app.get('/api/team', async (req, res) => {
     try {
         // Read team data
-        const teamData = await fs.readFile(path.join(__dirname, 'team.json'), 'utf8');
+        const teamData = await fs.readFile(join(__dirname, 'team.json'), 'utf8');
         res.json(JSON.parse(teamData));
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
