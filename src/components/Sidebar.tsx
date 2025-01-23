@@ -24,10 +24,13 @@ const Sidebar = () => {
   
 
   return (
-    <div className="w-64 bg-gray-900 min-h-screen p-4 text-white">
+    <div className="w-[4rem] md:w-64 bg-gray-900 min-h-screen p-4 text-white">
       <div className="flex items-center gap-2 mb-8 px-2">
-        <FolderKanban className="w-8 h-8 text-blue-400" />
-        <h1 className="text-xl font-bold">ProjectHub By Zs</h1>
+        <FolderKanban className="w-8 h-8 text-blue-400 hidden md:block" />
+        <h1 className="hidden md:block text-xl font-bold">ProjectHub By Zs</h1>
+        <span className='block md:hidden' >Zs</span>
+        
+
       </div>
       <nav>
       
@@ -43,7 +46,7 @@ const Sidebar = () => {
             }`}
           >
             <item.icon className="w-5 h-5" />
-            <span>{item.label}</span>
+            <span className='hidden md:block' >{item.label}</span>
           </Link>
         ))}
       </nav>

@@ -1,7 +1,23 @@
 
-import { Bell, Search, User } from 'lucide-react';
+import {  Search } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
+  
+    // State to store the fetched data
+    const [user, setUser] = useState([]);
+  
+    // Fetching the JSON data when the component mounts
+    useEffect(() => {
+      fetch('/user.json') // Fetch the JSON file from the public folder
+        .then((response) => response.json()) // Parse the response as JSON
+        .then((data) => {
+          setUser(data); // Set the data in state
+          console.log(data); // Log the data to the console
+        })
+        .catch((error) => console.error('Error fetching data:', error)); // Log any errors
+    }, []);
+
   return (
     <header className="bg-white border-b border-gray-200 p-4">
       <div className="flex justify-between items-center">
@@ -17,15 +33,12 @@ const Header = () => {
         </div>
         
         <div className="flex items-center gap-4">
-          <button className="relative p-2 hover:bg-gray-100 rounded-full">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            {user.map((u, index) => (
+          <button  key={index} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg">
+            <img className="hidden md:block object-cover object-center rounded w-[25px] h-[25px]" alt="hero" src={u.img} />
+            <span className="text-sm font-medium text-gray-700">{u.name}</span>
           </button>
-          
-          <button className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg">
-            <User className="w-5 h-5 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">Profile</span>
-          </button>
+          ))}
         </div>
       </div>
     </header>
