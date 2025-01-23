@@ -6,6 +6,7 @@ import teamData from '../../backend/team.json';
 
 interface ProjectCardProps {
   project: Project;
+ 
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {

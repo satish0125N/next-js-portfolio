@@ -11,52 +11,31 @@ const ProjectDetail = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProjectDetail = async () => {
+    const fetchProjectDetail = async (id: string) => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const apiUrl = window.location.hostname === 'localhost'
-            ? `http://localhost/react-with-tappa/next-js-portfolio/backend/projects.php?id=${id}`
-            : `https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php?id=${id}`;
-
-          const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer backend_static_token',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
-
-
-        // const response = await fetch(`https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php?id=${id}`, {
-        //   method: 'GET',
-        //   headers: {
-        //     'Authorization': 'Bearer backend_static_token',
-        //     'Content-Type': 'application/json',
-        //     'Accept': 'application/json'
-        //   }
-        // });
-
+        const response = await fetch('/projects.json'); // Fetch all projects
         if (!response.ok) {
-          const errorData = await response.json().catch(() => null);
-          throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
+          throw new Error('Failed to fetch projects');
         }
-
-        const data = await response.json();
-        // Since the API returns an array with one item when querying by ID
-        setProject(Array.isArray(data) && data.length > 0 ? data[0] : null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred while fetching project details');
-        console.error('Error fetching project details:', err);
+        const projects = await response.json();
+        const projectDetail = projects.find((project: Project) => project.id === id); // Find the specific project by ID
+        if (!projectDetail) {
+          throw new Error('Project not found');
+        }
+        setProject(projectDetail); // Set the project state
+      } catch (error) {
+        console.error('Error fetching project detail:', error);
+        setError(error.message); // Set error state
       } finally {
         setIsLoading(false);
       }
     };
 
     if (id) {
-      fetchProjectDetail();
+      fetchProjectDetail(id);
     }
   }, [id]);
 

@@ -7,31 +7,47 @@ import { Calendar, Users } from 'lucide-react';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Fetching the JSON data when the component mounts
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    setIsLoading(true); // Start loading
-    fetch('/projects.json') // Ensure this path is correct
-      .then((response) => {
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        
+        const apiUrl = window.location.hostname === 'localhost'
+            ? 'http://localhost/react-with-tappa/next-js-portfolio/backend/projects.php'
+            : 'https://next-js-portfolio-ebon-three.vercel.app/backend/projects.php';
+
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer backend_static_token',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          });
+  
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          const errorData = await response.json().catch(() => null);
+          throw new Error(errorData?.error || `HTTP error! status: ${response.status}`);
         }
-        return response.json();
-      })
-      .then((data) => {
-        setProjects(data); // Set the data in state
-        console.log(data); // Log the data to the console
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error); // Log any errors
-        setError(error.message); // Set error state
-      })
-      .finally(() => {
-        setIsLoading(false); // End loading
-      });
-  }, [setIsLoading]); 
+  
+        const data = await response.json();
+       
+        setProjects(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred while fetching projects');
+        console.error('Error fetching projects:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchProjects();
+  }, []);
   return (
     <div className=" ">
       {error && (

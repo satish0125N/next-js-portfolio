@@ -1,0 +1,20 @@
+[
+  {
+    "id": "team1",
+    "name": "Zs",
+    "role": "Frontend Developer",
+    "rank": "Junior",
+    "rating": "4.5",
+    "skills": ["HTML", "CSS", "JavaScript"],
+    "languages": ["English", "Hindi"]
+  },
+  {
+    "id": "team2",
+    "name": "Ns",
+    "role": "Backend Developer",
+    "rank": "Senior",
+    "rating": "4.5",
+    "skills": ["Node.js", "Express.js", "MongoDB"],
+    "languages": ["English", "Hindi"]
+  }
+]
