@@ -6,21 +6,17 @@ import {
   Users, 
 
 } from 'lucide-react';
-// CheckSquare, 
-// Calendar,
-// Settings
+
 const Sidebar = () => {
   const location = useLocation();
   
-  const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
-    { icon: FolderKanban, label: 'Projects', href: '/projects' },
-    // { icon: CheckSquare, label: 'Tasks' },
-    { icon: Users, label: 'Team', href: '/team' },
-    
-    // { icon: Calendar, label: 'Calendar' },
-    // { icon: Settings, label: 'Settings' }
-  ];
+  // Sidebar.tsx
+const menuItems = [
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/home/dashboard' }, // Update to /home/dashboard
+  { icon: FolderKanban, label: 'Projects', href: '/home/projects' }, // Update to /home/projects
+  { icon: Users, label: 'Team', href: '/home/team' }, // Update to /home/team
+];
+
   
 
   return (
